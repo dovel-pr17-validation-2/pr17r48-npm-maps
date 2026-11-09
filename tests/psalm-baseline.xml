@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<files psalm-version="6.16.1@f1f5de594dc76faf8784e02d3dc4716c91c6f6ac">
+  <file src="lib/Controller/PublicContactsController.php">
+    <UndefinedClass>
+      <code><![CDATA[\OC_User]]></code>
+    </UndefinedClass>
+    <UndefinedInterfaceMethod>
+      <code><![CDATA[getContent]]></code>
+    </UndefinedInterfaceMethod>
+  </file>
+  <file src="lib/Controller/PublicFavoritesController.php">
+    <UndefinedClass>
+      <code><![CDATA[\OC_User]]></code>
+    </UndefinedClass>
+  </file>
+  <file src="lib/Controller/PublicPageController.php">
+    <UndefinedClass>
+      <code><![CDATA[\OC_User]]></code>
+    </UndefinedClass>
+  </file>
+  <file src="lib/Controller/PublicPhotosController.php">
+    <UndefinedClass>
+      <code><![CDATA[\OC_User]]></code>
+    </UndefinedClass>
+    <UndefinedInterfaceMethod>
+      <code><![CDATA[getRelativePath]]></code>
+    </UndefinedInterfaceMethod>
+  </file>
+  <file src="lib/Controller/PublicTracksController.php">
+    <UndefinedClass>
+      <code><![CDATA[\OC_User]]></code>
+    </UndefinedClass>
+  </file>
+  <file src="lib/Controller/PublicUtilsController.php">
+    <UndefinedClass>
+      <code><![CDATA[\OC_User]]></code>
+    </UndefinedClass>
+  </file>
+  <file src="lib/Migration/RegisterMimeType.php">
+    <UndefinedClass>
+      <code><![CDATA[\OC]]></code>
+    </UndefinedClass>
+  </file>
+  <file src="lib/Migration/UnregisterMimeType.php">
+    <UndefinedClass>
+      <code><![CDATA[\OC]]></code>
+    </UndefinedClass>
+  </file>
+  <file src="lib/Service/DevicesService.php">
+    <UndefinedFunction>
+      <code><![CDATA['kmlDataElement']]></code>
+      <code><![CDATA['kmlEndElement']]></code>
+      <code><![CDATA['kmlStartElement']]></code>
+    </UndefinedFunction>
+  </file>
+  <file src="lib/Service/MimetypeService.php">
+    <UndefinedClass>
+      <code><![CDATA[\OC]]></code>
+    </UndefinedClass>
+  </file>
+  <file src="tests/Unit/Controller/ContactsControllerTest.php">
+    <UndefinedClass>
+      <code><![CDATA[ContactsManager]]></code>
+      <code><![CDATA[ContactsManager]]></code>
+    </UndefinedClass>
+  </file>
+  <file src="tests/Unit/Controller/DevicesControllerTest.php">
+    <UndefinedInterfaceMethod>
+      <code><![CDATA[getContent]]></code>
+    </UndefinedInterfaceMethod>
+  </file>
+  <file src="tests/Unit/Controller/FavoritesControllerTest.php">
+    <InvalidPropertyFetch>
+      <code><![CDATA[$xml->wpt]]></code>
+    </InvalidPropertyFetch>
+  </file>
+  <file src="tests/Unit/Controller/PhotosControllerTest.php">
+    <UndefinedInterfaceMethod>
+      <code><![CDATA[$dataForTrack]]></code>
+    </UndefinedInterfaceMethod>
+  </file>
+</files>

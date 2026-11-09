@@ -1,0 +1,21 @@
+<?php
+
+declare(strict_types=1);
+
+/**
+ * Nextcloud - maps
+ *
+ * This file is licensed under the Affero General Public License version 3 or
+ * later. See the COPYING file.
+ *
+ * @author Julien Veyssier <eneiluj@posteo.net>
+ * @copyright Julien Veyssier 2019
+ */
+
+use OCP\App\IAppManager;
+use OCP\Server;
+
+require_once __DIR__ . '/../../../tests/autoload.php';
+
+$appManager = Server::get(IAppManager::class);
+$appManager->loadApp('maps');

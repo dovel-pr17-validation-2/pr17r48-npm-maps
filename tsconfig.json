@@ -1,0 +1,12 @@
+{
+	"extends": "@vue/tsconfig",
+	"compilerOptions": {
+		"allowJs": true,
+		"allowImportingTsExtensions": true,
+		"rewriteRelativeImportExtensions": true,
+		"noEmit": true,
+	},
+	"vueCompilerOptions": {
+		"target": 2.7
+	}
+}

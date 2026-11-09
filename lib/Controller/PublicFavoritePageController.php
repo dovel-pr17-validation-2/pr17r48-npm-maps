@@ -1,0 +1,127 @@
+<?php
+
+/**
+ * @copyright Copyright (c) 2019, Paul Schwörer <hello@paulschwoerer.de>
+ *
+ * @author Paul Schwörer <hello@paulschwoerer.de>
+ *
+ * @license GNU AGPL version 3 or any later version
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+
+namespace OCA\Maps\Controller;
+
+use OCA\Maps\DB\FavoriteShareMapper;
+use OCP\AppFramework\Db\DoesNotExistException;
+use OCP\AppFramework\Db\MultipleObjectsReturnedException;
+use OCP\AppFramework\Http;
+use OCP\AppFramework\Http\DataResponse;
+use OCP\AppFramework\Http\Template\PublicTemplateResponse;
+use OCP\AppFramework\PublicShareController;
+use OCP\IRequest;
+use OCP\ISession;
+use OCP\IUserManager;
+use OCP\Util;
+
+class PublicFavoritePageController extends PublicShareController {
+	use AddCspTrait;
+
+	public function __construct(
+		string $appName,
+		IRequest $request,
+		ISession $session,
+		private readonly FavoriteShareMapper $favoriteShareMapper,
+		\OCP\IAppConfig $appConfig,
+	) {
+		$this->appConfig = $appConfig;
+		parent::__construct($appName, $request, $session);
+	}
+
+	/**
+	 * @param $token
+	 *
+	 * @return DataResponse|PublicTemplateResponse
+	 *
+	 * @PublicPage
+	 * @NoCSRFRequired
+	 */
+	public function sharedFavoritesCategory($token) {
+		if ($token === '') {
+			return new DataResponse([], Http::STATUS_BAD_REQUEST);
+		}
+
+		try {
+			$share = $this->favoriteShareMapper->findByToken($token);
+		} catch (DoesNotExistException) {
+			return new DataResponse([], Http::STATUS_NOT_FOUND);
+		} catch (MultipleObjectsReturnedException) {
+			return new DataResponse([], Http::STATUS_INTERNAL_SERVER_ERROR);
+		}
+
+		Util::addStyle($this->appName, 'merged-public-favorite-share');
+		Util::addScript($this->appName, 'maps-publicFavoriteShare');
+		Util::addStyle($this->appName, 'maps-publicFavoriteShare');
+
+		$response = new PublicTemplateResponse('maps', 'public/favorites_index', []);
+
+		$ownerName = \OCP\Server::get(IUserManager::class)->get($share->getOwner())->getDisplayName();
+
+		$response->setHeaderTitle($share->getCategory());
+		$response->setHeaderDetails('shared by ' . $ownerName);
+
+		$this->addCsp($response);
+
+		return $response;
+	}
+
+	/**
+	 * Get a hash of the password for this share
+	 *
+	 * To ensure access is blocked when the password to a share is changed we store
+	 * a hash of the password for this token.
+	 *
+	 * @since 14.0.0
+	 */
+	protected function getPasswordHash(): string {
+		return '';
+	}
+
+	/**
+	 * Is the provided token a valid token
+	 *
+	 * This function is already called from the middleware directly after setting the token.
+	 *
+	 * @since 14.0.0
+	 */
+	public function isValidToken(): bool {
+		try {
+			$this->favoriteShareMapper->findByToken($this->getToken());
+		} catch (DoesNotExistException|MultipleObjectsReturnedException) {
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Is a share with this token password protected
+	 *
+	 * @since 14.0.0
+	 */
+	protected function isPasswordProtected(): bool {
+		return false;
+	}
+}

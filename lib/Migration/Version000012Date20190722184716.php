@@ -1,0 +1,77 @@
+<?php
+
+declare(strict_types=1);
+
+namespace OCA\Maps\Migration;
+
+use Closure;
+use OCP\DB\ISchemaWrapper;
+use OCP\Migration\IOutput;
+use OCP\Migration\SimpleMigrationStep;
+
+/**
+ * Auto-generated migration step: Please modify to your needs!
+ */
+class Version000012Date20190722184716 extends SimpleMigrationStep {
+
+	public function __construct(
+		protected \OCP\IDBConnection $db,
+	) {
+	}
+
+	/**
+	 * @param Closure $schemaClosure The `\Closure` returns a `ISchemaWrapper`
+	 */
+	public function preSchemaChange(IOutput $output, Closure $schemaClosure, array $options) {
+	}
+
+	/**
+	 * @param Closure $schemaClosure The `\Closure` returns a `ISchemaWrapper`
+	 * @return null|ISchemaWrapper
+	 */
+	public function changeSchema(IOutput $output, Closure $schemaClosure, array $options) {
+		$schema = $schemaClosure();
+
+		if (!$schema->hasTable('maps_address_geo')) {
+			$table = $schema->createTable('maps_address_geo');
+			$table->addColumn('id', 'bigint', [
+				'autoincrement' => true,
+				'notnull' => true,
+				'length' => 41,
+			]);
+			$table->addColumn('adr', 'string', [
+				'notnull' => true,
+				'default' => '',
+				'length' => 255,
+			]);
+			$table->addColumn('adr_norm', 'string', [
+				'notnull' => true,
+				'default' => '',
+				'length' => 255,
+			]);
+			$table->addColumn('lat', 'float', [
+				'notnull' => false,
+				'length' => 10,
+			]);
+			$table->addColumn('lng', 'float', [
+				'notnull' => false,
+				'length' => 10,
+			]);
+			$table->addColumn('looked_up', 'boolean', [
+				'notnull' => false,
+				'default' => false,
+			]);
+			$table->setPrimaryKey(['id']);
+			$table->addIndex(['adr'], 'maps_adr');
+			$table->addIndex(['adr_norm'], 'maps_adr_norm');
+		}
+
+		return $schema;
+	}
+
+	/**
+	 * @param Closure $schemaClosure The `\Closure` returns a `ISchemaWrapper`
+	 */
+	public function postSchemaChange(IOutput $output, Closure $schemaClosure, array $options) {
+	}
+}

@@ -1,0 +1,144 @@
+<template>
+	<NcAppNavigationItem
+		:icon="loading ? 'icon-loading-small' : 'icon-category-multimedia'"
+		:name="t('maps', 'Photos')"
+		:class="{ 'item-disabled': !enabled }"
+		:allow-collapse="false"
+		:force-menu="enabled"
+		@click="$emit('photos-clicked')">
+		<template #counter>
+			<NcCounterBubble v-if="enabled && loading" :count="loadedPhotos" />
+			<NcCounterBubble v-else-if="enabled" :count="totalPhotos" />
+		</template>
+		<template v-if="enabled" #actions>
+			<NcActionButton v-if="!readOnly"
+				:icon="draggable ? 'icon-hand' : 'icon-hand-slash'"
+				:close-after-click="false"
+				@click="$emit('draggable-clicked')">
+				{{ draggable ? t('maps', 'Disable photo drag') : t('maps', 'Enable photo drag') }}
+			</NcActionButton>
+			<NcActionButton
+				:icon="showSuggestions ? 'icon-picture' : 'icon-picture'"
+				:close-after-click="true"
+				@click="$emit('suggestions-clicked')">
+				{{ showSuggestions ? t('maps', 'Hide suggestions') : t('maps', 'Suggest photo locations') }}
+			</NcActionButton>
+			<NcActionButton
+				:icon="'icon-reload'"
+				:close-after-click="true"
+				@click="$emit('clear-cache')">
+				{{ t('maps', 'Clear photo cache') }}
+			</NcActionButton>
+		</template>
+	</NcAppNavigationItem>
+</template>
+
+<script>
+import { NcAppNavigationItem, NcActionButton, NcCounterBubble } from '@nextcloud/vue'
+
+export default {
+	name: 'AppNavigationPhotosItem',
+
+	components: {
+		NcAppNavigationItem,
+		NcActionButton,
+		NcCounterBubble,
+	},
+
+	props: {
+		enabled: {
+			type: Boolean,
+			required: true,
+		},
+		loading: {
+			type: Boolean,
+			default: false,
+		},
+		loadedPhotos: {
+			type: Number,
+			required: true,
+		},
+		totalPhotos: {
+			type: Number,
+			required: true,
+		},
+		readOnly: {
+			type: Boolean,
+			default: false,
+		},
+		draggable: {
+			type: Boolean,
+			required: true,
+		},
+		showSuggestions: {
+			type: Boolean,
+			required: false,
+			default: false,
+		},
+	},
+
+	data() {
+		return {
+		}
+	},
+}
+</script>
+
+<style lang="scss" scoped>
+.item-disabled {
+	opacity: 0.5;
+}
+
+:deep(.icon-hand) {
+	opacity: 1;
+	background-color: var(--color-main-text);
+	padding: 0 !important;
+	mask: url('../../img/hand.svg') no-repeat;
+	mask-size: 16px auto;
+	mask-position: center;
+	-webkit-mask: url('../../img/hand.svg') no-repeat;
+	-webkit-mask-size: 16px auto;
+	-webkit-mask-position: center;
+	min-width: 38px !important;
+	min-height: 36px !important;
+}
+
+:deep(.icon-hand-slash) {
+	opacity: 1;
+	background-color: var(--color-main-text);
+	padding: 0 !important;
+	mask: url('../../img/hand-slash.svg') no-repeat;
+	mask-size: 16px auto;
+	mask-position: center;
+	-webkit-mask: url('../../img/hand-slash.svg') no-repeat;
+	-webkit-mask-size: 16px auto;
+	-webkit-mask-position: center;
+	min-width: 38px !important;
+	min-height: 36px !important;
+}
+
+:deep(.icon-picture) {
+	opacity: 1;
+	//background-color: var(--color-main-text);
+	padding: 0 !important;
+	//mask: url('../../img/hand.svg') no-repeat;
+	mask-size: 16px auto;
+	mask-position: center;
+	//-webkit-mask: url('../../img/hand.svg') no-repeat;
+	-webkit-mask-size: 16px auto;
+	-webkit-mask-position: center;
+	min-width: 38px !important;
+	min-height: 36px !important;
+}
+
+:deep(.icon-reload) {
+	opacity: 0.6;
+	background-color: var(--color-main-text);
+	mask: url('../../img/reload.svg') no-repeat;
+	mask-size: 16px auto;
+	mask-position: center;
+	-webkit-mask: url('../../img/reload.svg') no-repeat;
+	-webkit-mask-size: 16px auto;
+	-webkit-mask-position: center;
+}
+</style>
